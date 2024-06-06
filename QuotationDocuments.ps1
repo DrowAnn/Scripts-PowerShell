@@ -3,7 +3,7 @@
 Clear-Host
 
 #Files location
-$PathLocation = "C:\Users\rober\Downloads\Cotizaciones"
+$PathLocation = "C:\Users\rober\Downloads\Cotizaciones" #Change the path according to the directory
 
 #Start applications with COM
 $Excel = New-Object -ComObject Excel.Application
@@ -11,31 +11,31 @@ $Excel.Visible = $false
 $Excel.DisplayAlerts = $false
 
 #Open files by file extension
-$InitialFilePath = Get-ChildItem -Path "$PathLocation\*.xls"
+$InitialFilePath = Get-ChildItem -Path "$PathLocation\*.xls" # Change the File Extension according to the file or complete the path with the name of a specific file
 $WorkBook = $Excel.Workbooks.Open($InitialFilePath)
 
 #Get the consultant´s name
 $WorkSheet = $WorkBook.Worksheets.Item(1)
-$Consultant = $WorkSheet.Cells.Item(3,6).Value2
+$Consultant = $WorkSheet.Cells.Item(2,6).Value2 #Change the reference cell acording to the content of the file
 
 #Change the name of the sheet
 $WorkSheet.Name = "$Consultant"
 
 #Delete unnecesary columns
-$DeleteRange = @("Q:T","J:O","H:H","E:E","C:C")
+$DeleteRange = @("Q:T","J:O","H:H","E:E","C:C") # Change the array according to the ranges to be deleted
 foreach ($Range in $DeleteRange){
     $WorkSheet.Range("$Range").EntireColumn.Delete()
 }
 
 #Delete dots of price numbers
-$FindText = ".*"
-$ReplaceText = ""
-$WorkSheet.Range("C:C").Replace($FindText, $ReplaceText)
+$FindText = ".*" # Change with the text to find
+$ReplaceText = "" # Change with the text to set
+$WorkSheet.Range("C:C").Replace($FindText, $ReplaceText) # Change the range if necessary
 
 #Formatting texts
-$WorkSheet.Range("C:C").NumberFormat = "$#.##0"
-$WorkSheet.Range("E:E").NumberFormat = "dd/mm/yyyy"
-$WorkSheet.Range("F:F").NumberFormat = "0"
+$WorkSheet.Range("C:C").NumberFormat = "$#.##0" # Change the range if necessary
+$WorkSheet.Range("E:E").NumberFormat = "dd/mm/yyyy" # Change the range if necessary
+$WorkSheet.Range("F:F").NumberFormat = "0" # Change the range if necessary
 
 #Get Table Range
 $ColumnRange = $worksheet.Columns.Item("A")
